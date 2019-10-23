@@ -16,30 +16,30 @@ function submit(e) {
     // if (userText.Text !== '') {
     //make http call
     xhr.open('GET',
-        `https://api.giphy.com/v1/gifs/search?api_key=5zVtjNIcGO5vztzNFP0K7FKMiHwQnIcY&q=
-        ${userText}&limit=5&offset=0
-        &rating=G&lang=en`, true);
+        //`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${userText}&api-key=7AsSNEQ3yLt3hAU11oVrxZtqZWeERlIM`, true);
+        `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${userText}&fq=news_desk:("fashion")fq=source:("The New York Times")&api-key=7AsSNEQ3yLt3hAU11oVrxZtqZWeERlIM`, true);
 
 
     xhr.onload = function() {
         if (this.status === 200) {
             const response = JSON.parse(this.responseText);
-            //console.log(response)
+            console.log(response)
 
             var output = '';
 
-            if (response.meta.msg === 'OK') {
-                response.data.forEach(function(gif) {
-                    output += `<img src = '${gif.embed_url}'>`
-                        //console.log(output)
-                });
-            } else {
-                output += `<li>something went wrong</li>`
-            }
+            response.response.docs.forEach(function(form) {
+                output += `<div class='container card bg-dark text-white'><div>HeadLine:<br>${form.headline.main} <br>Abstract:<br>${form.abstract} </div><br><a href ='${form.web_url}'>Read More</a></div>`
 
-            document.querySelector('#profile').innerHTML = output
+                console.log(output)
+
+            });
+        } else {
+            output += `<li>something went wrong</li>`
         }
+
+        document.querySelector('#profile').innerHTML = output
     }
+
 
 
 
